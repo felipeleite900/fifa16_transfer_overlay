@@ -1,0 +1,165 @@
+[Physical > Acceleration]
+  address: "fifa16.exe"+034D7908
+  offsets: 2E8 -> 2B0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Sprint Speed]
+  address: "fifa16.exe"+034D7908
+  offsets: 568 -> 290 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Agility]
+  address: "fifa16.exe"+034D7908
+  offsets: 1E8 -> 2D0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Balance]
+  address: "fifa16.exe"+034D7908
+  offsets: 668 -> 298 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Jumping]
+  address: "fifa16.exe"+034D7908
+  offsets: 268 -> 298 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Stamina]
+  address: "fifa16.exe"+034D7908
+  offsets: 368 -> 290 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Strength]
+  address: "fifa16.exe"+034D7908
+  offsets: 368 -> 298 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Physical > Reactions]
+  address: "fifa16.exe"+034D7908
+  offsets: 568 -> 2A0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Mental > Aggression]
+  address: "fifa16.exe"+034D7908
+  offsets: 668 -> 2A0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Mental > Interceptions]
+  address: "fifa16.exe"+034D7908
+  offsets: 68 -> 308 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Mental > Attacking Position]
+  address: "fifa16.exe"+034D7908
+  offsets: E8 -> 308 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Mental > Vision]
+  address: "fifa16.exe"+034D7908
+  offsets: E8 -> 310 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Ball Control]
+  address: "fifa16.exe"+034D7908
+  offsets: 1E8 -> 290 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Crossing]
+  address: "fifa16.exe"+034D7908
+  offsets: 668 -> 98 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Dribbling]
+  address: "fifa16.exe"+034EBE00
+  offsets: 668 -> 558 -> 2B8 -> E8 -> A8
+  type: 4 Bytes
+
+[Technical > Finishing]
+  address: "fifa16.exe"+034EBE00
+  offsets: 268 -> 498 -> A8 -> E8 -> A8
+  type: 4 Bytes
+
+[Technical > FK Acc.]
+  address: "fifa16.exe"+034D7908
+  offsets: 368 -> 200 -> 280 -> 18 -> 120
+  type: 4 Bytes
+
+[Technical > Heading Acc.]
+  address: "fifa16.exe"+034D7908
+  offsets: 668 -> 420 -> 120 -> 10 -> 18
+  type: 4 Bytes
+
+[Technical > Long Pass]
+  address: "fifa16.exe"+034D7908
+  offsets: 68 -> 2A0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Short Pass]
+  address: "fifa16.exe"+034D7908
+  offsets: 7E8 -> 98 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Marking]
+  address: "fifa16.exe"+03732D78
+  offsets: 768 -> 158 -> 1A0 -> 6C0 -> 3B8
+  type: 4 Bytes
+
+[Technical > Shot Power]
+  address: "fifa16.exe"+034D7908
+  offsets: 5E8 -> 100 -> 280 -> 18 -> 120
+  type: 4 Bytes
+
+[Technical > Long Shots]
+  address: "fifa16.exe"+034D7908
+  offsets: 6E8 -> 200 -> 280 -> 18 -> 120
+  type: 4 Bytes
+
+[Technical > Stand Tackle]
+  address: "fifa16.exe"+034D7908
+  offsets: 7E8 -> A8 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Slide Tackle]
+  address: "fifa16.exe"+03732D78
+  offsets: 7E8 -> 4A0 -> 20 -> 770 -> 3B8
+  type: 4 Bytes
+
+[Technical > Volleys]
+  address: "fifa16.exe"+034D7908
+  offsets: 6E8 -> 420 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Technical > Curve]
+  address: "fifa16.exe"+034D7908
+  offsets: 1E8 -> 100 -> 480 -> 18 -> 120
+  type: 4 Bytes
+
+[Technical > Penalties]
+  address: "fifa16.exe"+034D7908
+  offsets: 3E8 -> 2E8 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Goalkeeping > GK Diving]
+  address: "fifa16.exe"+034D7908
+  offsets: 768 -> 2B8 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Goalkeeping > GK Handling]
+  address: "fifa16.exe"+034D7908
+  offsets: 56C -> 2E0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Goalkeeping > GK Kicking]
+  address: "fifa16.exe"+034D7908
+  offsets: 3E8 -> 300 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Goalkeeping > GK Reflexes]
+  address: "fifa16.exe"+034D7908
+  offsets: 568 -> 2F8 -> 0 -> E0 -> 120
+  type: 4 Bytes
+
+[Goalkeeping > GK Positioning]
+  address: "fifa16.exe"+034D7908
+  offsets: 768 -> 2D0 -> 0 -> E0 -> 120
+  type: 4 Bytes
+

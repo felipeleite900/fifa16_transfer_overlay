@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>FIFA 16 Companion - Pesquisa de Jogadores</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Pesquisa de Jogadores</h1>
+    <span id="save-info" class="save-info">carregando save...</span>
+  </header>
+
+  <form id="filters-form" class="filters">
+    <div class="field">
+      <label for="name">Nome</label>
+      <input type="text" id="name" placeholder="ex: Mbappé" />
+    </div>
+
+    <div class="field">
+      <label for="position">Posição</label>
+      <select id="position">
+        <option value="">Todas</option>
+        <option value="GK">GK</option>
+        <option value="CB">CB</option>
+        <option value="RB">RB</option>
+        <option value="LB">LB</option>
+        <option value="CDM">CDM</option>
+        <option value="CM">CM</option>
+        <option value="RM">RM</option>
+        <option value="LM">LM</option>
+        <option value="CAM">CAM</option>
+        <option value="RW">RW</option>
+        <option value="LW">LW</option>
+        <option value="ST">ST</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label>Idade</label>
+      <div class="range-pair">
+        <input type="number" id="min-age" placeholder="min" min="14" max="50" />
+        <span>-</span>
+        <input type="number" id="max-age" placeholder="max" min="14" max="50" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Overall</label>
+      <div class="range-pair">
+        <input type="number" id="min-overall" placeholder="min" min="0" max="99" />
+        <span>-</span>
+        <input type="number" id="max-overall" placeholder="max" min="0" max="99" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Potencial</label>
+      <div class="range-pair">
+        <input type="number" id="min-potential" placeholder="min" min="0" max="99" />
+        <span>-</span>
+        <input type="number" id="max-potential" placeholder="max" min="0" max="99" />
+      </div>
+    </div>
+
+    <div class="field">
+      <label for="nationality">Nacionalidade</label>
+      <input type="text" id="nationality" placeholder="ex: Brazil" />
+    </div>
+
+    <div class="field">
+      <label for="foot">Pé preferido</label>
+      <select id="foot">
+        <option value="">Qualquer</option>
+        <option value="left">Esquerdo</option>
+        <option value="right">Direito</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="sort-by">Ordenar por</label>
+      <select id="sort-by">
+        <option value="potential">Potencial</option>
+        <option value="overall">Overall</option>
+        <option value="age">Idade</option>
+      </select>
+    </div>
+
+    <button type="submit" id="search-btn">Buscar</button>
+  </form>
+
+  <div id="status" class="status"></div>
+
+  <table id="results-table">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>Idade</th>
+        <th>Pos</th>
+        <th>OVR</th>
+        <th>POT</th>
+        <th>Nacionalidade</th>
+        <th>Pé</th>
+        <th>Altura</th>
+      </tr>
+    </thead>
+    <tbody id="results-body"></tbody>
+  </table>
+
+  <script src="renderer.js"></script>
+</body>
+</html>

@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+.venv/
+venv/
+
+# Node / Electron (companion)
+node_modules/
+npm-debug.log*
+dist/
+build/
+
+# Rust (fifa_injector, fifa_overlay have their own .gitignore, this is a safety net)
+target/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+.idea/

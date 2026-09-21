@@ -1,0 +1,12 @@
+{
+  "name": "fifa16-companion",
+  "version": "0.1.0",
+  "description": "Interface companion para FIFA 16 - busca de jogadores lendo diretamente do save",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^33.0.0"
+  }
+}
