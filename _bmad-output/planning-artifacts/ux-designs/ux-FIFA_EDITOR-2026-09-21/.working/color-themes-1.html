@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Central de Scout — Temas de Cor (Roxo)</title>
+<style>
+  :root { color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 32px;
+    font-family: -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: #0a0a0f;
+    color: #e8e8f0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 24px;
+  }
+  h1 { grid-column: 1 / -1; font-size: 20px; font-weight: 600; margin: 0 0 8px; }
+  .subtitle { grid-column: 1 / -1; font-size: 13px; color: #999; margin: 0 0 16px; }
+  .theme-card {
+    border-radius: 12px;
+    padding: 20px;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .theme-header { margin-bottom: 14px; }
+  .theme-name { font-size: 15px; font-weight: 700; margin: 0 0 2px; }
+  .theme-register { font-size: 12px; opacity: 0.7; margin: 0; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .chip {
+    font-size: 10px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-family: "Consolas", monospace;
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .mock-panel {
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 12px;
+  }
+  .mock-titlebar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  .mock-title { font-weight: 700; font-size: 13px; }
+  .mock-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .mock-tab {
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    opacity: 0.6;
+  }
+  .mock-tab.active { opacity: 1; font-weight: 700; }
+  .mock-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 8px;
+    border-radius: 6px;
+    margin-bottom: 4px;
+    font-size: 11px;
+  }
+  .mock-btn {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 6px;
+    margin-top: 8px;
+  }
+  .tier-badge {
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 6px;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<h1>Central de Scout — 4 variações de tema roxo (dark/gamer)</h1>
+<p class="subtitle">Todas escuras (fundo semi-transparente sobre o jogo), roxo como destaque de marca. Variam em saturação/tom do roxo e em como o dourado (Elite) e o verde (sucesso) convivem com ele.</p>
+
+<!-- VARIAÇÃO 1: Roxo Elétrico -->
+<!--
+  bg-base: #0a0a12 (quase preto, leve tint azul-roxo)
+  bg-panel: rgba(18,16,28,0.92)
+  accent-primary: #a855f7 (roxo vibrante/elétrico)
+  accent-primary-dim: #7c3aed
+  text-primary: #f0edf7
+  text-secondary: #9c94b0
+  success: #22d38a
+  warning: #fbbf24
+  tier-elite: #fbbf24 (dourado)
+  tier-veteran: #a855f7
+  tier-junior: #6b7280
+-->
+<div class="theme-card" style="background:#0a0a12;">
+  <div class="theme-header">
+    <p class="theme-name" style="color:#a855f7;">1. Roxo Elétrico</p>
+    <p class="theme-register">Vibrante, energético — feels like a "power tool" gamer</p>
+  </div>
+  <div class="chips">
+    <span class="chip" style="background:#a855f7;color:#0a0a12;">accent #a855f7</span>
+    <span class="chip" style="background:#7c3aed;color:#fff;">accent-dim #7c3aed</span>
+    <span class="chip" style="background:#22d38a;color:#0a0a12;">success #22d38a</span>
+    <span class="chip" style="background:#fbbf24;color:#0a0a12;">elite #fbbf24</span>
+  </div>
+  <div class="mock-panel" style="background:rgba(18,16,28,0.92); border:1px solid rgba(168,85,247,0.3); color:#f0edf7;">
+    <div class="mock-titlebar">
+      <span class="mock-title" style="color:#a855f7;">⚽ CENTRAL DE SCOUT</span>
+      <span style="font-size:10px; color:#9c94b0;">Orçamento: R$ 12.4M</span>
+    </div>
+    <div class="mock-tabs">
+      <span class="mock-tab active" style="background:#a855f7; color:#0a0a12;">Olheiros</span>
+      <span class="mock-tab" style="color:#9c94b0;">Missões</span>
+      <span class="mock-tab" style="color:#9c94b0;">Relatórios</span>
+    </div>
+    <div class="mock-row" style="background:rgba(255,255,255,0.03);">
+      <span>Tático · <span class="tier-badge" style="background:#fbbf24;color:#0a0a12;">ELITE</span></span>
+      <span style="color:#22d38a;">Disponível</span>
+    </div>
+    <div class="mock-row" style="background:rgba(168,85,247,0.12);">
+      <span>Caçador de Jovens · <span class="tier-badge" style="background:#a855f7;color:#0a0a12;">EXP</span></span>
+      <span style="color:#fbbf24;">Em missão</span>
+    </div>
+    <button class="mock-btn" style="background:#a855f7; color:#0a0a12; border:none;">CONTRATAR</button>
+  </div>
+</div>
+
+<!-- VARIAÇÃO 2: Roxo Profundo / Royal -->
+<!--
+  bg-base: #0d0b16
+  bg-panel: rgba(22,18,32,0.94)
+  accent-primary: #7c3aed (roxo royal, mais denso/sério)
+  accent-primary-bright: #9d6bff
+  text-primary: #eae6f5
+  text-secondary: #8b83a3
+  success: #34d399
+  warning: #f59e0b
+  tier-elite: #f0b429 (dourado mais quente)
+  tier-veteran: #9d6bff
+  tier-junior: #5b5470
+-->
+<div class="theme-card" style="background:#0d0b16;">
+  <div class="theme-header">
+    <p class="theme-name" style="color:#9d6bff;">2. Roxo Royal Profundo</p>
+    <p class="theme-register">Mais sério/premium — feels like scouting de elite, menos "arcade"</p>
+  </div>
+  <div class="chips">
+    <span class="chip" style="background:#7c3aed;color:#fff;">accent #7c3aed</span>
+    <span class="chip" style="background:#9d6bff;color:#0d0b16;">bright #9d6bff</span>
+    <span class="chip" style="background:#34d399;color:#0d0b16;">success #34d399</span>
+    <span class="chip" style="background:#f0b429;color:#0d0b16;">elite #f0b429</span>
+  </div>
+  <div class="mock-panel" style="background:rgba(22,18,32,0.94); border:1px solid rgba(124,58,237,0.25); color:#eae6f5;">
+    <div class="mock-titlebar">
+      <span class="mock-title" style="color:#9d6bff;">⚽ CENTRAL DE SCOUT</span>
+      <span style="font-size:10px; color:#8b83a3;">Orçamento: R$ 12.4M</span>
+    </div>
+    <div class="mock-tabs">
+      <span class="mock-tab active" style="background:#7c3aed; color:#fff;">Olheiros</span>
+      <span class="mock-tab" style="color:#8b83a3;">Missões</span>
+      <span class="mock-tab" style="color:#8b83a3;">Relatórios</span>
+    </div>
+    <div class="mock-row" style="background:rgba(255,255,255,0.03);">
+      <span>Tático · <span class="tier-badge" style="background:#f0b429;color:#0d0b16;">ELITE</span></span>
+      <span style="color:#34d399;">Disponível</span>
+    </div>
+    <div class="mock-row" style="background:rgba(124,58,237,0.14);">
+      <span>Caçador de Jovens · <span class="tier-badge" style="background:#9d6bff;color:#0d0b16;">EXP</span></span>
+      <span style="color:#f0b429;">Em missão</span>
+    </div>
+    <button class="mock-btn" style="background:#7c3aed; color:#fff; border:none;">CONTRATAR</button>
+  </div>
+</div>
+
+<!-- VARIAÇÃO 3: Roxo + Verde-Campo (identidade FIFA) -->
+<!--
+  bg-base: #0b0e0c
+  bg-panel: rgba(16,20,18,0.93)
+  accent-primary: #b45cff (roxo)
+  accent-secondary: #3ecf6e (verde campo, referência FIFA)
+  text-primary: #e9f2ec
+  text-secondary: #869488
+  success: #3ecf6e
+  warning: #f5a623
+  tier-elite: #f5a623
+  tier-veteran: #b45cff
+  tier-junior: #5c6b5f
+-->
+<div class="theme-card" style="background:#0b0e0c;">
+  <div class="theme-header">
+    <p class="theme-name" style="color:#b45cff;">3. Roxo + Verde-Campo</p>
+    <p class="theme-register">Roxo de marca contra verde-gramado — remete ao FIFA sem copiar o menu nativo</p>
+  </div>
+  <div class="chips">
+    <span class="chip" style="background:#b45cff;color:#0b0e0c;">accent #b45cff</span>
+    <span class="chip" style="background:#3ecf6e;color:#0b0e0c;">field #3ecf6e</span>
+    <span class="chip" style="background:#f5a623;color:#0b0e0c;">elite #f5a623</span>
+    <span class="chip" style="background:#5c6b5f;color:#fff;">junior #5c6b5f</span>
+  </div>
+  <div class="mock-panel" style="background:rgba(16,20,18,0.93); border:1px solid rgba(180,92,255,0.28); color:#e9f2ec;">
+    <div class="mock-titlebar">
+      <span class="mock-title" style="color:#b45cff;">⚽ CENTRAL DE SCOUT</span>
+      <span style="font-size:10px; color:#869488;">Orçamento: R$ 12.4M</span>
+    </div>
+    <div class="mock-tabs">
+      <span class="mock-tab active" style="background:#b45cff; color:#0b0e0c;">Olheiros</span>
+      <span class="mock-tab" style="color:#869488;">Missões</span>
+      <span class="mock-tab" style="color:#869488;">Relatórios</span>
+    </div>
+    <div class="mock-row" style="background:rgba(255,255,255,0.03);">
+      <span>Tático · <span class="tier-badge" style="background:#f5a623;color:#0b0e0c;">ELITE</span></span>
+      <span style="color:#3ecf6e;">Disponível</span>
+    </div>
+    <div class="mock-row" style="background:rgba(180,92,255,0.13);">
+      <span>Caçador de Jovens · <span class="tier-badge" style="background:#b45cff;color:#0b0e0c;">EXP</span></span>
+      <span style="color:#f5a623;">Em missão</span>
+    </div>
+    <button class="mock-btn" style="background:#3ecf6e; color:#0b0e0c; border:none;">CONTRATAR</button>
+  </div>
+</div>
+
+<!-- VARIAÇÃO 4: Roxo Neon Cyberpunk -->
+<!--
+  bg-base: #08060d
+  bg-panel: rgba(14,10,22,0.90)
+  accent-primary: #d946ef (magenta-roxo neon, mais frio/cyber)
+  accent-secondary: #22d3ee (ciano, contraste frio)
+  text-primary: #f3e8ff
+  text-secondary: #7c6f94
+  success: #4ade80
+  warning: #facc15
+  tier-elite: #facc15
+  tier-veteran: #d946ef
+  tier-junior: #4b4460
+-->
+<div class="theme-card" style="background:#08060d;">
+  <div class="theme-header">
+    <p class="theme-name" style="color:#d946ef;">4. Roxo Neon Cyberpunk</p>
+    <p class="theme-register">Mais frio/futurista, contraste magenta+ciano — visual "scanner/radar" literal</p>
+  </div>
+  <div class="chips">
+    <span class="chip" style="background:#d946ef;color:#08060d;">accent #d946ef</span>
+    <span class="chip" style="background:#22d3ee;color:#08060d;">cyan #22d3ee</span>
+    <span class="chip" style="background:#4ade80;color:#08060d;">success #4ade80</span>
+    <span class="chip" style="background:#facc15;color:#08060d;">elite #facc15</span>
+  </div>
+  <div class="mock-panel" style="background:rgba(14,10,22,0.90); border:1px solid rgba(217,70,239,0.3); color:#f3e8ff;">
+    <div class="mock-titlebar">
+      <span class="mock-title" style="color:#d946ef;">⚽ CENTRAL DE SCOUT</span>
+      <span style="font-size:10px; color:#7c6f94;">Orçamento: R$ 12.4M</span>
+    </div>
+    <div class="mock-tabs">
+      <span class="mock-tab active" style="background:#d946ef; color:#08060d;">Olheiros</span>
+      <span class="mock-tab" style="color:#7c6f94;">Missões</span>
+      <span class="mock-tab" style="color:#22d3ee;">Relatórios</span>
+    </div>
+    <div class="mock-row" style="background:rgba(255,255,255,0.03);">
+      <span>Tático · <span class="tier-badge" style="background:#facc15;color:#08060d;">ELITE</span></span>
+      <span style="color:#4ade80;">Disponível</span>
+    </div>
+    <div class="mock-row" style="background:rgba(217,70,239,0.13);">
+      <span>Caçador de Jovens · <span class="tier-badge" style="background:#d946ef;color:#08060d;">EXP</span></span>
+      <span style="color:#facc15;">Em missão</span>
+    </div>
+    <button class="mock-btn" style="background:#d946ef; color:#08060d; border:none;">CONTRATAR</button>
+  </div>
+</div>
+
+</body>
+</html>

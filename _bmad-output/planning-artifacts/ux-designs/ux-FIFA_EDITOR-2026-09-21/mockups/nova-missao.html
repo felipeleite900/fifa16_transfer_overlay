@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Central de Scout — Formulário Nova Missão (lista vertical)</title>
+<style>
+  /*
+    Spine sections illustrated (v2 — redesenho para controle):
+    - EXPERIENCE.md > Component Patterns: "Formulário Nova Missão" (lista
+      vertical de linhas de configuração, estilo menu de console)
+    - EXPERIENCE.md > Key Flows > Fluxo 2 (navegação por D-pad, linha a
+      linha, rodapé fixo de estimativa)
+    - PRD FR-4 (5 filtros), FR-5 (Modo de Busca)
+    - DESIGN.md > Components: "Formulário em lista vertical"
+
+    Ajuste v2: substitui o layout de 2 colunas encaixotado por uma lista
+    vertical de linhas grandes, navegável com D-pad cima/baixo. Cada linha
+    mostra o rótulo à esquerda e o valor/resumo à direita. A linha em foco
+    (aqui: "Filtro geográfico") ganha contorno completo. Rodapé fixo com
+    estimativa ao vivo, sempre visível.
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1a13;
+    color: #e9f2ec;
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+  }
+  .game-hint { position:absolute; top:18px; left:18px; font-size:11px; color:rgba(255,255,255,0.35); font-family:monospace; }
+
+  .panel-window {
+    width: 58%; height: 82%;
+    background: rgba(16,20,18,0.93);
+    border: 1px solid rgba(180,92,255,0.28);
+    border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  .panel-header { display:flex; align-items:center; justify-content:space-between; padding:14px 24px; border-bottom:1px solid rgba(255,255,255,0.08); }
+  .panel-title { font-family:'Oswald',Impact,sans-serif; font-weight:600; font-size:17px; }
+  .panel-title .accent { color:#b45cff; }
+  .btn-close { font-size:12px; color:#869488; border:1px solid rgba(180,92,255,0.28); padding:4px 10px; border-radius:6px; }
+
+  .form-list { flex: 1; overflow-y: auto; padding: 6px 0; }
+
+  .form-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+  }
+  .form-row.focused {
+    border: 1px solid #b45cff;
+    border-radius: 8px;
+    margin: 2px 12px;
+    padding: 15px 12px;
+    background: rgba(180,92,255,0.06);
+  }
+  .row-label { font-family:'Oswald',Impact,sans-serif; font-size:12px; letter-spacing:0.6px; text-transform:uppercase; color:#869488; display:flex; align-items:center; gap:8px; }
+  .row-label .idx { width:18px; height:18px; border-radius:4px; border:1px solid rgba(255,255,255,0.15); font-size:10px; display:flex; align-items:center; justify-content:center; color:#4d564f; }
+  .form-row.focused .row-label { color:#e9f2ec; }
+  .row-value { font-size: 13px; color: #e9f2ec; text-align: right; }
+  .row-value .sub { display:block; font-size:11px; color:#869488; margin-top:2px; }
+  .chevron { color: #4d564f; margin-left: 10px; font-size: 12px; }
+  .form-row.focused .chevron { color: #b45cff; }
+
+  .tier-badge { font-family: 'Oswald', Impact, sans-serif; font-size: 9px; font-weight: 700; padding: 2px 6px; border-radius: 4px; border: 1px solid #b45cff; color: #c087ff; background: rgba(180,92,255,0.10); margin-left: 6px; }
+
+  .toggle-inline { display:flex; gap:6px; justify-content:flex-end; }
+  .toggle-pill { font-family: 'Oswald', Impact, sans-serif; font-size: 11px; padding: 5px 12px; border-radius: 999px; border: 1px solid rgba(255,255,255,0.12); color: #869488; }
+  .toggle-pill.active { border-color:#b45cff; color:#c087ff; background: rgba(180,92,255,0.10); font-weight:600; }
+
+  /* Rodapé fixo — sempre visível */
+  .footer-estimate {
+    display: flex;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    background: rgba(11,14,12,0.6);
+    padding: 14px 24px;
+    gap: 24px;
+    align-items: center;
+  }
+  .est-item { text-align:center; }
+  .est-label { font-size: 10px; color: #869488; text-transform:uppercase; letter-spacing:0.5px; margin-bottom: 3px; }
+  .est-value { font-family: 'Consolas', monospace; font-size: 15px; color:#e9f2ec; }
+  .quality-badge { font-family: 'Oswald', Impact, sans-serif; font-size: 11px; font-weight: 700; padding: 3px 10px; border-radius: 4px; border: 1px solid #f5a623; color:#f5a623; }
+  .btn-confirm { margin-left: auto; font-family:'Oswald',Impact,sans-serif; font-size:13px; font-weight:600; background:#3ecf6e; color:#0b0e0c; padding:10px 22px; border-radius:6px; border:none; }
+
+  .gamepad-hint {
+    display: flex; gap: 16px; padding: 8px 24px; font-size: 10px; color: #4d564f; font-family: 'Consolas', monospace;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+  .gamepad-hint b { color: #869488; }
+
+  .caption { position:absolute; bottom:-34px; left:0; right:0; text-align:center; color:#666; font-size:12px; font-family: sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="game-hint">[FIFA 16 — Modo Carreira — fullscreen exclusivo]</div>
+
+<div class="panel-window">
+  <div class="panel-header">
+    <div class="panel-title">Nova <span class="accent">Missão</span> de Scouting</div>
+    <div class="btn-close">✕ Cancelar</div>
+  </div>
+
+  <div class="form-list">
+    <div class="form-row">
+      <div class="row-label"><span class="idx">1</span>Olheiro</div>
+      <div class="row-value">Tático <span class="tier-badge">EXP</span><span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row focused">
+      <div class="row-label"><span class="idx">2</span>Filtro geográfico</div>
+      <div class="row-value">América do Sul, Europa <span class="sub">2 regiões selecionadas</span><span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="row-label"><span class="idx">3</span>Overall / Potencial</div>
+      <div class="row-value">68 – 90 <span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="row-label"><span class="idx">4</span>Atributo dominante</div>
+      <div class="row-value">Nenhum selecionado <span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="row-label"><span class="idx">5</span>Fit posicional</div>
+      <div class="row-value">Ativado — Volante <span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="row-label"><span class="idx">6</span>Jogador de referência</div>
+      <div class="row-value">Nenhum selecionado <span class="chevron">›</span></div>
+    </div>
+
+    <div class="form-row">
+      <div class="row-label"><span class="idx">7</span>Modo de busca</div>
+      <div class="row-value">
+        <div class="toggle-inline">
+          <div class="toggle-pill">Rápida</div>
+          <div class="toggle-pill active">Completa</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gamepad-hint">
+    <span><b>D-pad ↕</b> navegar</span>
+    <span><b>A</b> abrir campo</span>
+    <span><b>B</b> cancelar</span>
+    <span><b>Y</b> confirmar missão</span>
+  </div>
+
+  <div class="footer-estimate">
+    <div class="est-item"><div class="est-label">Custo</div><div class="est-value">R$ 1.850.000</div></div>
+    <div class="est-item"><div class="est-label">Tempo</div><div class="est-value">~14 dias</div></div>
+    <div class="est-item"><div class="est-label">Qualidade</div><span class="quality-badge">ALTA</span></div>
+    <button class="btn-confirm">CONFIRMAR</button>
+  </div>
+</div>
+
+<div style="position:relative; width:58%;">
+  <p class="caption">Formulário Nova Missão (v2) — lista vertical estilo menu de console, navegável por D-pad cima/baixo; linha "Filtro geográfico" em foco. Rodapé de estimativa sempre visível, mesmo dentro de painéis de campo.</p>
+</div>
+
+</body>
+</html>

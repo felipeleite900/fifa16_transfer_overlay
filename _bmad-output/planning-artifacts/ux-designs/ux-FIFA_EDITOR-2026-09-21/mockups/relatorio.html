@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Central de Scout — Relatório (Tabular vs. Cards)</title>
+<style>
+  /*
+    Spine sections illustrated:
+    - EXPERIENCE.md > Component Patterns: "Linha/Card de jogador",
+      "Toggle de densidade"
+    - DESIGN.md > Components: "Card de jogador (visão espaçosa)",
+      "Linha de tabela (visão densa)"
+    - PRD FR-9 (Relatório com Qualidade variável — nome, idade, posição
+      nativa + Fit Posicional, atributos)
+    - Duas colunas nesta mock = duas alternativas do mesmo Toggle de
+      densidade (EXPERIENCE.md), não duas telas simultâneas reais.
+
+    Ajuste v2 (feedback do usuário): reforço de que a visão Cards usa a
+    MINIFACE REAL do jogador (data/ui/imgAssets/heads/p<ID>.dds), não um
+    placeholder de iniciais — aqui simulada com uma foto de rosto genérica
+    via CSS (silhueta realista), já que o mock não tem acesso ao asset real
+    do jogo. Sem glow de fundo; fit-chip em contorno.
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1a13;
+    color: #e9f2ec;
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+  }
+  .game-hint { position:absolute; top:18px; left:18px; font-size:11px; color:rgba(255,255,255,.35); font-family:monospace; }
+
+  .wrap { display:flex; gap: 28px; align-items: flex-start; }
+
+  .panel-window {
+    width: 480px; height: 560px;
+    background: rgba(16,20,18,0.93);
+    border: 1px solid rgba(180,92,255,0.28);
+    border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .panel-header { padding: 14px 18px 10px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .panel-title { font-family:'Oswald',Impact,sans-serif; font-size:15px; font-weight:600; color:#e9f2ec; margin-bottom:8px; }
+  .panel-title .accent { color:#b45cff; }
+
+  .toggle-row { display:flex; gap:6px; }
+  .toggle-pill { font-family:'Oswald',Impact,sans-serif; font-size:11px; padding:5px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.08); color:#869488; }
+  .toggle-pill.active { background:rgba(180,92,255,0.10); color:#c087ff; border-color:#b45cff; font-weight:600; }
+
+  .panel-body { flex:1; padding: 12px 18px; overflow-y:auto; }
+
+  /* --- TABULAR --- */
+  table.dense { width:100%; border-collapse: collapse; font-size:11px; }
+  table.dense th {
+    text-align:left; font-family:'Oswald',Impact,sans-serif; font-size:9px;
+    letter-spacing:0.5px; text-transform:uppercase; color:#869488;
+    padding: 6px 6px; border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  table.dense td { padding: 7px 6px; border-bottom: 1px solid rgba(255,255,255,0.05); font-family:'Consolas',monospace; }
+  table.dense td.name { font-family:'Inter',sans-serif; }
+  .fit-chip { background: transparent; border: 1px solid #b45cff; color:#c087ff; font-family:'Oswald',Impact,sans-serif; font-size:9px; padding:2px 6px; border-radius:4px; margin-left:4px; }
+  .range { color: #869488; }
+
+  /* --- CARDS --- */
+  .player-card {
+    display:flex; gap:12px;
+    background: rgba(24,29,26,0.96);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+  /* Miniface real do jogador (data/ui/imgAssets/heads/p<ID>.dds) — aqui
+     simulada com um retrato genérico via CSS radial (silhueta realista),
+     não um placeholder de iniciais. */
+  .avatar {
+    width: 52px; height:52px; border-radius:8px;
+    background:
+      radial-gradient(circle at 50% 38%, #d9c2a3 0%, #d9c2a3 22%, transparent 23%),
+      radial-gradient(circle at 50% 75%, #b89d7d 0%, #b89d7d 40%, transparent 41%),
+      #6b5f4f;
+    flex-shrink:0;
+    border: 1px solid rgba(255,255,255,0.08);
+  }
+  .card-main { flex:1; }
+  .card-name { font-family:'Oswald',Impact,sans-serif; font-size:14px; font-weight:500; }
+  .card-meta { font-size:11px; color:#869488; margin: 3px 0 6px; display:flex; gap:8px; align-items:center; }
+  .card-attrs { display:flex; gap:14px; font-family:'Consolas',monospace; font-size:11px; }
+  .attr-label { color:#869488; font-family:'Inter',sans-serif; font-size:9px; display:block; }
+
+  .caption { margin-top: 12px; text-align:center; color:#666; font-size:12px; font-family:sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="game-hint">[FIFA 16 — Modo Carreira — fullscreen exclusivo]</div>
+
+<div>
+<div class="wrap">
+
+  <!-- VISÃO TABULAR -->
+  <div>
+    <div class="panel-window">
+      <div class="panel-header">
+        <div class="panel-title">Relatório: <span class="accent">Volante fora de posição</span></div>
+        <div class="toggle-row">
+          <div class="toggle-pill active">Tabular</div>
+          <div class="toggle-pill">Cards</div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <table class="dense">
+          <tr><th>Nome</th><th>Idade</th><th>Posição</th><th>OVR</th><th>POT</th><th>Fit</th></tr>
+          <tr><td class="name">L. Fontaine</td><td>23</td><td>MAO</td><td>76</td><td>82</td><td><span class="fit-chip">VOL 88%</span></td></tr>
+          <tr><td class="name">R. Almeida</td><td>21</td><td>MC</td><td>74</td><td class="range">78-85</td><td><span class="fit-chip">VOL 81%</span></td></tr>
+          <tr><td class="name">D. Kowalski</td><td>25</td><td>MAO</td><td>78</td><td>80</td><td><span class="fit-chip">VOL 79%</span></td></tr>
+          <tr><td class="name">T. Osei</td><td>22</td><td>MC</td><td class="range">70-79</td><td class="range">80-88</td><td><span class="fit-chip">VOL 75%</span></td></tr>
+        </table>
+      </div>
+    </div>
+    <p class="caption">Visão Tabular — colunas fixas em fonte mono para<br>alinhamento; faixas quando a Qualidade não é exata.</p>
+  </div>
+
+  <!-- VISÃO CARDS -->
+  <div>
+    <div class="panel-window">
+      <div class="panel-header">
+        <div class="panel-title">Relatório: <span class="accent">Volante fora de posição</span></div>
+        <div class="toggle-row">
+          <div class="toggle-pill">Tabular</div>
+          <div class="toggle-pill active">Cards</div>
+        </div>
+      </div>
+      <div class="panel-body">
+        <div class="player-card">
+          <div class="avatar" title="Miniface real (data/ui/imgAssets/heads/p74521.dds)"></div>
+          <div class="card-main">
+            <div class="card-name">L. Fontaine</div>
+            <div class="card-meta">23 anos · MAO <span class="fit-chip">VOL 88%</span></div>
+            <div class="card-attrs">
+              <div><span class="attr-label">OVR</span>76</div>
+              <div><span class="attr-label">POT</span>82</div>
+              <div><span class="attr-label">DEF</span>71</div>
+              <div><span class="attr-label">FÍS</span>75</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-card">
+          <div class="avatar" title="Miniface real (data/ui/imgAssets/heads/p88034.dds)"></div>
+          <div class="card-main">
+            <div class="card-name">R. Almeida</div>
+            <div class="card-meta">21 anos · MC <span class="fit-chip">VOL 81%</span></div>
+            <div class="card-attrs">
+              <div><span class="attr-label">OVR</span>74</div>
+              <div><span class="attr-label">POT</span class="range">78-85</div>
+              <div><span class="attr-label">DEF</span>68</div>
+              <div><span class="attr-label">FÍS</span>—</div>
+            </div>
+          </div>
+        </div>
+        <div class="player-card">
+          <div class="avatar" title="Miniface real (data/ui/imgAssets/heads/p91207.dds)"></div>
+          <div class="card-main">
+            <div class="card-name">D. Kowalski</div>
+            <div class="card-meta">25 anos · MAO <span class="fit-chip">VOL 79%</span></div>
+            <div class="card-attrs">
+              <div><span class="attr-label">OVR</span>78</div>
+              <div><span class="attr-label">POT</span>80</div>
+              <div><span class="attr-label">DEF</span>74</div>
+              <div><span class="attr-label">FÍS</span>77</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="caption">Visão Cards — miniface REAL do jogador em destaque<br>(data/ui/imgAssets/heads/p&lt;ID&gt;.dds); nunca placeholder de iniciais quando o arquivo existe.</p>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>

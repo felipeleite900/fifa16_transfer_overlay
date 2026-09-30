@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Central de Scout — Ficha de Jogador (bio + atributos + radar)</title>
+<style>
+  /*
+    Spine sections illustrated (v2 — substitui key-radar-detalhe.html):
+    - EXPERIENCE.md > Information Architecture ("Ficha de Jogador")
+    - EXPERIENCE.md > Component Patterns: "Ficha de Jogador", "Radar de
+      Atributos", "Seletor de elenco (Jogador de Referência)"
+    - EXPERIENCE.md > Key Flows > Fluxo 3 (clímax: dois radares sobrepostos
+      lado a lado com o restante da ficha sempre visível)
+    - PRD FR-9 (nome, idade, posição + Fit, atributos), FR-10 (Radar +
+      comparação)
+    - DESIGN.md > Components: "Radar de Atributos" (contorno roxo sólido +
+      contorno verde-campo tracejado; eixos não revelados pontilhados)
+
+    Ajuste v2: era uma tela pequena só com radar; agora é uma ficha
+    completa — bio + lista de atributos + radar, tudo visível ao mesmo
+    tempo, sem sub-abas. Sem glow de fundo.
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1a13;
+    color: #e9f2ec;
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+  }
+  .game-hint { position:absolute; top:18px; left:18px; font-size:11px; color:rgba(255,255,255,.35); font-family:monospace; }
+
+  .panel-window {
+    width: 82%; height: 84%;
+    background: rgba(16,20,18,0.93);
+    border: 1px solid rgba(180,92,255,0.28);
+    border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+
+  .panel-header { display:flex; justify-content:space-between; align-items:flex-start; padding: 18px 24px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .header-left { display:flex; gap: 16px; align-items:center; }
+
+  /* Miniface real, maior aqui (ficha de detalhe) */
+  .avatar-lg {
+    width: 72px; height:72px; border-radius:10px;
+    background:
+      radial-gradient(circle at 50% 38%, #d9c2a3 0%, #d9c2a3 22%, transparent 23%),
+      radial-gradient(circle at 50% 75%, #b89d7d 0%, #b89d7d 40%, transparent 41%),
+      #6b5f4f;
+    border: 1px solid rgba(180,92,255,0.28);
+    flex-shrink: 0;
+  }
+
+  .player-title { font-family:'Oswald',Impact,sans-serif; font-size:22px; font-weight:600; }
+  .player-sub { font-size:12px; color:#869488; margin-top:4px; display:flex; gap:8px; align-items:center; }
+  .fit-chip { border:1px solid #b45cff; color:#c087ff; font-family:'Oswald',Impact,sans-serif; font-size:10px; padding:2px 8px; border-radius:4px; }
+  .btn-close { font-size:12px; color:#869488; border:1px solid rgba(180,92,255,.28); padding:5px 12px; border-radius:6px; height: fit-content; }
+
+  .body-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1.1fr;
+    gap: 0;
+    overflow: hidden;
+  }
+  .col { padding: 18px 22px; overflow-y: auto; }
+  .col:not(:last-child) { border-right: 1px solid rgba(255,255,255,0.08); }
+
+  .col-title { font-family:'Oswald',Impact,sans-serif; font-size:12px; letter-spacing:0.8px; text-transform:uppercase; color:#869488; margin-bottom:14px; }
+
+  /* Coluna 1: bio */
+  .bio-row { display:flex; justify-content:space-between; padding: 9px 0; border-bottom: 1px solid rgba(255,255,255,0.05); font-size:12px; }
+  .bio-label { color:#869488; }
+  .bio-value { font-family:'Consolas',monospace; }
+
+  /* Coluna 2: atributos completos */
+  .attr-group-title { font-size: 10px; color: #6d7a70; text-transform: uppercase; letter-spacing:0.5px; margin: 12px 0 6px; }
+  .attr-group-title:first-child { margin-top: 0; }
+  .attr-row { display:flex; justify-content:space-between; padding: 5px 0; font-size:12px; }
+  .attr-name { color:#c7d2cb; }
+  .attr-value { font-family:'Consolas',monospace; }
+  .attr-value.range { color:#869488; }
+
+  /* Coluna 3: radar + comparação */
+  .compare-bar { display:flex; align-items:center; gap:10px; font-size:11px; margin-bottom:10px; flex-wrap: wrap; }
+  .legend-dot { width:9px; height:9px; border-radius:50%; display:inline-block; margin-right:5px; }
+  .legend-primary { background:#b45cff; }
+  .legend-ref-dash { display:inline-block; width:9px; height:0; border-top: 2px dashed #3ecf6e; margin-right:5px; }
+  .compare-btn { font-family:'Oswald',Impact,sans-serif; font-size:10px; font-weight:600; background:transparent; border:1px solid rgba(180,92,255,.28); color:#e9f2ec; padding:5px 10px; border-radius:6px; margin-left: auto; }
+
+  .fit-note { text-align:center; font-size: 10px; color:#f5a623; margin-top: 8px; font-family:'Oswald',Impact,sans-serif; }
+
+  .caption { position:absolute; bottom:-34px; left:0; right:0; text-align:center; color:#666; font-size:12px; font-family:sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="game-hint">[FIFA 16 — Modo Carreira — fullscreen exclusivo]</div>
+
+<div class="panel-window">
+  <div class="panel-header">
+    <div class="header-left">
+      <div class="avatar-lg" title="Miniface real (data/ui/imgAssets/heads/p74521.dds)"></div>
+      <div>
+        <div class="player-title">L. Fontaine</div>
+        <div class="player-sub">
+          23 anos · Meia Ofensivo (nativo) · Pé destro
+          <span class="fit-chip">FIT VOLANTE 88%</span>
+        </div>
+      </div>
+    </div>
+    <div class="btn-close">✕ Fechar</div>
+  </div>
+
+  <div class="body-grid">
+
+    <!-- Coluna 1: Bio -->
+    <div class="col">
+      <div class="col-title">Dados biográficos</div>
+      <div class="bio-row"><span class="bio-label">Idade</span><span class="bio-value">23 anos</span></div>
+      <div class="bio-row"><span class="bio-label">Posição nativa</span><span class="bio-value">MAO</span></div>
+      <div class="bio-row"><span class="bio-label">Fit posicional</span><span class="bio-value">Volante · 88%</span></div>
+      <div class="bio-row"><span class="bio-label">Pé preferido</span><span class="bio-value">Destro</span></div>
+      <div class="bio-row"><span class="bio-label">Nacionalidade</span><span class="bio-value">França</span></div>
+      <div class="bio-row"><span class="bio-label">Overall</span><span class="bio-value">76</span></div>
+      <div class="bio-row"><span class="bio-label">Potencial</span><span class="bio-value">82</span></div>
+      <div class="bio-row"><span class="bio-label">Work rate atq.</span><span class="bio-value">Alto</span></div>
+      <div class="bio-row"><span class="bio-label">Work rate def.</span><span class="bio-value">Médio</span></div>
+    </div>
+
+    <!-- Coluna 2: Atributos completos -->
+    <div class="col">
+      <div class="col-title">Atributos</div>
+      <div class="attr-group-title">Ritmo</div>
+      <div class="attr-row"><span class="attr-name">Aceleração</span><span class="attr-value">79</span></div>
+      <div class="attr-row"><span class="attr-name">Velocidade</span><span class="attr-value">77</span></div>
+      <div class="attr-group-title">Finalização</div>
+      <div class="attr-row"><span class="attr-name">Chute</span><span class="attr-value">73</span></div>
+      <div class="attr-row"><span class="attr-name">Cabeceio</span><span class="attr-value range">60-70</span></div>
+      <div class="attr-group-title">Passe</div>
+      <div class="attr-row"><span class="attr-name">Visão de jogo</span><span class="attr-value">80</span></div>
+      <div class="attr-row"><span class="attr-name">Cruzamento</span><span class="attr-value">74</span></div>
+      <div class="attr-group-title">Drible</div>
+      <div class="attr-row"><span class="attr-name">Drible</span><span class="attr-value">81</span></div>
+      <div class="attr-row"><span class="attr-name">Controle de bola</span><span class="attr-value">78</span></div>
+      <div class="attr-group-title">Defesa</div>
+      <div class="attr-row"><span class="attr-name">Desarme</span><span class="attr-value">71</span></div>
+      <div class="attr-row"><span class="attr-name">Marcação</span><span class="attr-value">69</span></div>
+      <div class="attr-group-title">Físico</div>
+      <div class="attr-row"><span class="attr-name">Força</span><span class="attr-value">75</span></div>
+      <div class="attr-row"><span class="attr-name">Fôlego</span><span class="attr-value range">70-80</span></div>
+    </div>
+
+    <!-- Coluna 3: Radar + comparação -->
+    <div class="col">
+      <div class="col-title">Radar de atributos</div>
+      <div class="compare-bar">
+        <span><span class="legend-dot legend-primary"></span>L. Fontaine</span>
+        <span><span class="legend-ref-dash"></span>R. Silva (titular)</span>
+        <button class="compare-btn">TROCAR</button>
+      </div>
+
+      <svg width="100%" height="230" viewBox="0 0 260 260">
+        <g stroke="rgba(255,255,255,0.08)" fill="none">
+          <polygon points="130,25 215,80 215,180 130,235 45,180 45,80" />
+          <polygon points="130,55 190,95 190,165 130,205 70,165 70,95" />
+          <polygon points="130,85 165,110 165,150 130,175 95,150 95,110" />
+        </g>
+        <g stroke="rgba(255,255,255,0.12)">
+          <line x1="130" y1="130" x2="130" y2="25" />
+          <line x1="130" y1="130" x2="215" y2="80" />
+          <line x1="130" y1="130" x2="215" y2="180" />
+          <line x1="130" y1="130" x2="130" y2="235" />
+          <line x1="130" y1="130" x2="45" y2="180" />
+          <line x1="130" y1="130" x2="45" y2="80" />
+        </g>
+        <g fill="#869488" font-family="Oswald, sans-serif" font-size="9" text-anchor="middle">
+          <text x="130" y="14">RITMO</text>
+          <text x="228" y="78">FINALIZ.</text>
+          <text x="228" y="185">PASSE</text>
+          <text x="130" y="252">DRIBLE</text>
+          <text x="32" y="185">DEFESA</text>
+          <text x="32" y="78">FÍSICO</text>
+        </g>
+        <polygon points="130,60 178,90 172,158 130,190 100,165 85,90"
+                 fill="rgba(62,207,110,0.06)" stroke="#3ecf6e" stroke-width="1.8" stroke-dasharray="5,4" />
+        <polygon points="130,75 195,95 182,150 130,168 105,148 78,88"
+                 fill="rgba(180,92,255,0.12)" stroke="#b45cff" stroke-width="2.2" />
+        <g fill="#b45cff">
+          <circle cx="130" cy="75" r="3.5" />
+          <circle cx="195" cy="95" r="3.5" />
+          <circle cx="182" cy="150" r="3.5" />
+          <circle cx="130" cy="168" r="3.5" />
+          <circle cx="105" cy="148" r="3.5" />
+          <circle cx="78" cy="88" r="3.5" />
+        </g>
+      </svg>
+
+      <div class="fit-note">6/6 eixos revelados — Qualidade Alta (Tático · Experiente)</div>
+    </div>
+
+  </div>
+</div>
+
+<div style="position:relative; width:82%;">
+  <p class="caption">Ficha de Jogador (v2) — bio completa, todos os atributos e o Radar sobreposto (roxo sólido = L. Fontaine; verde-campo tracejado = R. Silva, titular) numa única tela, sem sub-abas.</p>
+</div>
+
+</body>
+</html>

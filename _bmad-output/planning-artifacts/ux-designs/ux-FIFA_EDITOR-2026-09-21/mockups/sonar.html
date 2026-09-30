@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Central de Scout — Aba Sonar de Cobertura (por país)</title>
+<style>
+  /*
+    Spine sections illustrated (v2 — granularidade por país reforçada):
+    - EXPERIENCE.md > Information Architecture ("Aba Sonar")
+    - EXPERIENCE.md > Component Patterns: "Mapa Sonar (modo visualização)"
+    - EXPERIENCE.md > Key Flows > Fluxo 5 (Sonar de Cobertura, por país)
+    - PRD FR-11 (Sonar de Cobertura — mapa por país)
+    - DESIGN.md > Components: "Sonar de Cobertura (mapa)" — países
+      individuais, contorno + preenchimento tênue, sem preenchimento
+      sólido saturado.
+
+    Ajuste v2: era um mapa por continente; agora cada país é uma forma
+    individual (mesmo componente do Painel de Seleção Geográfica, aqui em
+    modo somente-leitura). Sem glow de fundo.
+  */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; height: 100%; overflow: hidden; }
+  body {
+    font-family: 'Inter', -apple-system, "Segoe UI", Roboto, sans-serif;
+    background: #0d1a13;
+    color: #e9f2ec;
+    display: flex; align-items: center; justify-content: center;
+    height: 100vh;
+  }
+  .game-hint { position:absolute; top:18px; left:18px; font-size:11px; color:rgba(255,255,255,.35); font-family:monospace; }
+
+  .panel-window {
+    width: 76%; height: 80%;
+    background: rgba(16,20,18,0.93);
+    border: 1px solid rgba(180,92,255,0.28);
+    border-radius: 12px;
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  .panel-header { display:flex; align-items:center; justify-content:space-between; padding:16px 24px; border-bottom:1px solid rgba(255,255,255,.08); }
+  .panel-title { font-family:'Oswald',Impact,sans-serif; font-weight:600; font-size:20px; color:#b45cff; }
+  .panel-title span { color:#3ecf6e; }
+  .budget { font-family:'Oswald',Impact,sans-serif; font-size:13px; color:#869488; }
+  .budget b { color:#e9f2ec; }
+
+  .tab-bar { display:flex; gap:8px; padding:12px 24px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+  .tab { font-family:'Oswald',Impact,sans-serif; font-size:13px; padding:8px 18px; border-radius:8px 8px 0 0; color:#869488; }
+  .tab.active { background:#b45cff; color:#0b0e0c; font-weight:600; }
+
+  .panel-body { flex:1; padding: 18px 24px; display:flex; gap: 18px; }
+
+  .map-area { flex: 1; background: rgba(8,12,10,0.5); border: 1px solid rgba(255,255,255,0.08); border-radius: 10px; position: relative; overflow: hidden; padding: 14px; }
+
+  .country { position:absolute; border-radius: 6px; font-family:'Oswald',Impact,sans-serif; font-size:9px; display:flex; align-items:center; justify-content:center; text-align:center; padding: 2px; border: 1px solid rgba(255,255,255,0.10); color: #6d7a70; background: rgba(255,255,255,0.03); }
+  .country.active { border-color: #b45cff; color: #c087ff; background: rgba(180,92,255,0.10); }
+  .country.done { border-color: #3ecf6e; color: #7fe3a3; background: rgba(62,207,110,0.10); }
+  .country.selected-cursor { outline: 2px solid #e9f2ec; outline-offset: 2px; }
+
+  .pulse { position: absolute; border-radius: 50%; border: 1.5px solid #b45cff; opacity: 0.6; pointer-events: none; }
+
+  .legend { width: 210px; display: flex; flex-direction: column; gap: 12px; }
+  .legend-item { display:flex; align-items:center; gap:8px; font-size:12px; }
+  .legend-swatch { width:16px; height:16px; border-radius:4px; border: 1px solid; }
+  .region-summary { background: rgba(24,29,26,0.96); border: 1px solid rgba(180,92,255,0.28); border-radius: 8px; padding: 12px; margin-top: 8px; }
+  .region-summary-title { font-family:'Oswald',Impact,sans-serif; font-size:12px; color:#3ecf6e; margin-bottom:6px; }
+  .region-summary-row { font-size:11px; color:#869488; margin-bottom:3px; }
+
+  .caption { position:absolute; bottom:-34px; left:0; right:0; text-align:center; color:#666; font-size:12px; font-family:sans-serif; }
+</style>
+</head>
+<body>
+
+<div class="game-hint">[FIFA 16 — Modo Carreira — fullscreen exclusivo]</div>
+
+<div class="panel-window">
+  <div class="panel-header">
+    <div class="panel-title">⚽ CENTRAL DE <span>SCOUT</span></div>
+    <div class="budget">Orçamento de Scouting: <b>R$ 10.550.000</b></div>
+  </div>
+
+  <div class="tab-bar">
+    <div class="tab">OLHEIROS</div>
+    <div class="tab">MISSÕES</div>
+    <div class="tab">RELATÓRIOS</div>
+    <div class="tab active">SONAR</div>
+  </div>
+
+  <div class="panel-body">
+    <div class="map-area">
+      <!-- Am. do Norte — nunca escaneados -->
+      <div class="country" style="top:8%; left:6%; width:15%; height:20%;">EUA</div>
+      <div class="country" style="top:30%; left:4%; width:12%; height:14%;">México</div>
+
+      <!-- Am. do Sul — Missões concluídas -->
+      <div class="country done" style="top:46%; left:14%; width:11%; height:16%;">Brasil</div>
+      <div class="country done" style="top:64%; left:10%; width:10%; height:14%;">Argentina</div>
+      <div class="country" style="top:48%; left:26%; width:9%; height:12%;">Uruguai</div>
+
+      <!-- Europa — Missão ativa -->
+      <div class="country active selected-cursor" style="top:10%; left:44%; width:9%; height:12%;">Inglaterra</div>
+      <div class="pulse" style="top:8%; left:43%; width:11%; height:16%;"></div>
+      <div class="country" style="top:8%; left:54%; width:8%; height:11%;">Alemanha</div>
+      <div class="country active" style="top:20%; left:47%; width:8%; height:11%;">França</div>
+      <div class="country" style="top:22%; left:56%; width:8%; height:11%;">Itália</div>
+
+      <!-- África — nunca escaneados -->
+      <div class="country" style="top:38%; left:48%; width:10%; height:16%;">Nigéria</div>
+      <div class="country" style="top:56%; left:55%; width:10%; height:16%;">África do Sul</div>
+
+      <!-- Ásia — concluído parcial -->
+      <div class="country done" style="top:14%; left:76%; width:10%; height:14%;">Japão</div>
+      <div class="country" style="top:28%; left:70%; width:10%; height:14%;">China</div>
+
+      <!-- Oceania -->
+      <div class="country" style="top:70%; left:82%; width:12%; height:16%;">Austrália</div>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.15);"></div>Nunca escaneado</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:rgba(180,92,255,0.10); border-color:#b45cff;"></div>Missão ativa</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:rgba(62,207,110,0.10); border-color:#3ecf6e;"></div>Missão concluída</div>
+
+      <div class="region-summary">
+        <div class="region-summary-title">Inglaterra (selecionada)</div>
+        <div class="region-summary-row">1 Missão ativa — Tático (EXP)</div>
+        <div class="region-summary-row">0 Relatórios concluídos aqui</div>
+        <div class="region-summary-row">Progresso: 38%</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div style="position:relative; width:76%;">
+  <p class="caption">Aba Sonar (v2) — granularidade por país (não por continente); Inglaterra com pulso indicando Missão ativa. Mesmo componente visual do Painel de Seleção Geográfica, em modo somente-leitura.</p>
+</div>
+
+</body>
+</html>
